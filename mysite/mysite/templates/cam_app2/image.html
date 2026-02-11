@@ -1,0 +1,406 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block extra_css %}
+
+  <head>
+    <title>Image Detection</title>
+  </head>
+  <!-- Poppins font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f2f5f8;
+      padding-top: 80px;
+    }
+    .card-container {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      padding: 2rem;
+      margin-bottom: 4rem;
+    }
+    h1.display-4 {
+      color: #1f2a44;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    .file-drop-area {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      border: 2px dashed #c1cbd8;
+      border-radius: 8px;
+      background: #fafbfc;
+      transition: border-color .3s, background .3s;
+    }
+    .file-drop-area:hover {
+      border-color: #1f2a44;
+      background: #f0f3f7;
+    }
+    .choose-file-button {
+      background: #ff7f50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .3s;
+    }
+    .choose-file-button:hover {
+      background: #e76f3d;
+    }
+    .file-message {
+      margin-left: 1rem;
+      color: #777;
+      font-size: 0.95rem;
+    }
+    .btn-primary {
+      background: #1f2a44;
+      border-color: #1f2a44;
+      border-radius: 6px;
+      font-weight: 600;
+      padding: 10px 24px;
+      transition: background .3s;
+    }
+    .btn-primary:hover {
+      background: #151d2e;
+    }
+    .grid-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+      gap: 16px;
+      margin-top: 1rem;
+    }
+    .grid-gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      object-fit: cover;
+    }
+    .tabs {
+      margin-top: 2rem;
+    }
+    .tabs button {
+      background: none;
+      border: none;
+      padding: 8px 16px;
+      font-weight: 600;
+      color: #555;
+      cursor: pointer;
+      position: relative;
+      margin-right: 8px;
+    }
+    .tabs button.active {
+      color: #1f2a44;
+    }
+    .tabs button.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0; right: 0;
+      height: 3px;
+      background: #ff7f50;
+      border-radius: 2px;
+    }
+    .tab-content {
+      display: none;
+      margin-top: 1rem;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    ul.file-list, ul.result-list {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 1rem;
+    }
+    ul.file-list li a, ul.result-list li a {
+      color: #1f2a44;
+      text-decoration: none;
+    }
+    ul.file-list li, ul.result-list li {
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+        /* Lightbox styling */
+    .lightbox {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
+      z-index: 2000;
+    }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 30px; font-size: 3rem; color: #fff; cursor: pointer;
+    }
+    .lightbox-img {
+      max-width: 90%; max-height: 90%; border-radius: 8px;
+    }
+
+    /*Summary panel*/
+    .summary-panel {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .summary-panel h3 {
+      margin-bottom: 1rem;
+      color: #1f2a44;
+      font-weight: 600;
+    }
+    .summary-card {
+      border: 1px solid #e4e9f0;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .summary-card h5 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #333;
+    }
+    .summary-card ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    .summary-card ul li {
+      font-size: 0.9rem;
+      padding: 4px 0;
+      border-bottom: 1px dotted #ddd;
+    }
+    .summary-card ul li:last-child {
+      border-bottom: none;
+    }
+
+    .thumb-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 0.75rem;
+    }
+    .thumb-row img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 8px;
+      transition: transform 0.3s ease !important;
+    }
+
+    /* when zoomed, double the size (or tweak as you like) */
+    .lightbox-img.zoomed {
+      transform: scale(5) !important;
+      cursor: zoom-out;
+    }
+
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="container card-container">
+
+  <center>
+    <h1 class="display-4">{{ page.name_title }}</h1>
+    <p class="subtitle">{{ page.name_subtitle|richtext }}</p>
+  </center>
+
+  <!-- File Upload Form -->
+  <form method="POST" enctype="multipart/form-data" id="form1">
+    {% csrf_token %}
+    <div class="file-drop-area">
+      <button type="button" class="choose-file-button">Choose Files</button>
+      <span class="file-message">or drag & drop your images here</span>
+      <!-- hidden native input -->
+      <input 
+        type="file" 
+        name="file_data" 
+        class="file-input" 
+        accept=".jpg,.jpeg,.png" 
+        multiple 
+        style="display:none;"
+      >
+    </div>
+    <div class="text-center" style="margin-top:1rem;">
+      <button class="btn btn-primary" type="submit">Upload</button>
+    </div>
+  </form>
+
+  <!-- Uploaded Files List -->
+  <ul class="file-list">
+    {% for f in my_uploaded_file_names %}
+      <li><a href="{{ f }}" target="_blank">{{ f|slice:'-30:' }}</a></li>
+    {% empty %}
+      <li class="text-muted">No images selected.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Start Detection -->
+  <div class="text-center" style="margin-top:2rem;">
+    <form method="POST" action=".">
+      {% csrf_token %}
+      <button class="btn btn-primary" type="submit" name="start">Start Detection</button>
+    </form>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="active" data-tab="raw">Raw Images</button>
+    <button data-tab="result">Result Images</button>
+  </div>
+
+  <!-- Tab Contents -->
+  <div id="raw" class="tab-content active">
+    <div class="grid-gallery">
+      {% for img in my_uploaded_file_names %}
+        <a href="{{ img }}" target="_blank">
+          <img src="{{ img }}" alt="Raw image">
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div id="result" class="tab-content">
+    <div class="grid-gallery">
+      {% for img in my_result_file_names %}
+        <img src="{{ img }}" alt="Result image" class="thumb-trigger">
+      {% endfor %}
+    </div>
+
+    {% if detection_summary %}
+      <div class="summary-panel">
+        <h3>Detection Summary</h3>
+        {% for img_key, dets in detection_summary.items %}
+          <div class="summary-card">
+            <h5>{{ img_key }}</h5>
+            <ul>
+              {% for d in dets %}
+                <li>{{ d.label }}: {{ d.confidence|floatformat:2 }} confidence</li>
+              {% endfor %}
+            </ul>
+            <!--cropped thumbnails row -->
+            <div class="thumb-row">
+              {% for d in dets %}
+                <img src="{{ d.thumb_url }}" alt="crop" class="thumb-trigger">
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+    <!-- Lightbox markup -->
+  <div id="lightbox" class="lightbox" style="display:none;">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-img" src="" alt="Preview">
+  </div>
+
+
+</div>
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    // Unbind any old handlers first
+    $('.choose-file-button').off('click');
+
+    // Only this single handler now
+    $('.choose-file-button').on('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      // trigger the (single) hidden file-input
+      document.querySelector('.file-input').click();
+    });
+
+    // Update the file-message when files are chosen
+    $('.file-input').off('change').on('change', function(){
+      var n = this.files.length;
+      $('.file-message').text(
+        n === 1 ? this.files[0].name : n + ' files selected'
+      );
+    });
+  });
+
+  // Simple Tabs
+  $('.tabs button').on('click', function(){
+    var tab = $(this).data('tab');
+    $('.tabs button').removeClass('active');
+    $(this).addClass('active');
+    $('.tab-content').removeClass('active');
+    $('#' + tab).addClass('active');
+  });
+
+  // Lightbox behavior
+  $(document).ready(function(){
+    // when any raw or result thumbnail is clicked
+    $('.grid-gallery img').on('click', function(e){
+      e.preventDefault();
+      const src = $(this).attr('src');
+      $('.lightbox-img').attr('src', src);
+      $('#lightbox').fadeIn(200);
+    });
+    // close lightbox on X or background click
+    $('.lightbox-close, .lightbox').on('click', function(){
+      $('#lightbox').fadeOut(200);
+    });
+    // prevent clicking the image itself from closing
+    $('.lightbox-img').on('click', function(e){
+      e.stopPropagation();
+    });
+  });
+
+  // Lightbox on any .thumb-trigger
+  $('.thumb-trigger').off('click').on('click', function(){
+      let src = $(this).attr('src');
+      $('.lightbox-img').attr('src', src);
+      $('#lightbox').fadeIn(200);
+    });
+    $('.lightbox-close, .lightbox').on('click', ()=>{
+      $('#lightbox').fadeOut(200);
+    });
+
+  $('.lightbox-img').on('click', e=> e.stopPropagation());
+
+  $(function(){
+    // --- Open any thumbnail (raw, result, or crop) in the lightbox ---
+    $(document).on('click', '.grid-gallery img, .thumb-row img', function(e){
+      e.preventDefault();
+      let src = $(this).attr('src');
+      $('.lightbox-img').attr('src', src).removeClass('zoomed');  // reset zoom each open
+      $('#lightbox').fadeIn(200);
+    });
+
+    // --- Close lightbox when clicking background or X ---
+    $(document).on('click', '.lightbox, .lightbox-close', function(){
+      $('#lightbox').fadeOut(200);
+    });
+
+    // --- Prevent background‐click when clicking the image itself ---
+    $(document).on('click', '.lightbox-img', function(e){
+      e.stopPropagation();
+      // toggle zoom class
+      $(this).toggleClass('zoomed');
+    });
+  });
+</script>
+{% endblock %}
+{% endblock %}

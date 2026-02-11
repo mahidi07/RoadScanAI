@@ -1,0 +1,163 @@
+{# templates/about_page.html #}
+{% extends "base.html" %}
+
+{% block extra_css %}
+
+  <head>
+    <title>About</title>
+  </head>
+  <style>
+    /* Page-specific tweaks */
+    .container {
+      border-radius: 12px;
+    }
+    .about-hero {
+      border-radius: 12px;
+      padding-bottom: 4rem;   /* ← add this */
+      background-color: #f8f9fa;
+      padding: 4rem 0;
+    }
+    .about-hero h1 {
+      color: #2c3e50;
+      font-weight: 700;
+    }
+    .about-hero p.lead {
+      max-width: 720px;
+      margin: 0 auto;
+      color: #555;
+    }
+    .feature-icon {
+      font-size: 2rem;
+      color: #ff7f50;
+    }
+    .feature-card {
+      transition: transform 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <!-- Hero section -->
+  <section class="about-hero text-center mt-5 pt-5">
+    <div class="container">
+      <h1 class="display-4">About RoadScan AI</h1>
+      <p class="lead mt-3">
+        RoadScan AI is an end-to-end damage inspection platform powered by RF-DETR.  
+        Upload images or dashcam footage, and our system will automatically
+        detect, classify, and visualize every crack, pothole, and surface deformation.
+      </p>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="py-5">
+    <div class="container">
+      <h2 class="mb-4 text-center">How It Works</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card feature-card h-100 text-center p-3 border-0">
+            <div class="feature-icon mb-3">📤</div>
+            <h5 class="card-title">1. Upload</h5>
+            <p class="card-text text-muted">
+              Simply drag-and-drop your images or video files into the web interface.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card feature-card h-100 text-center p-3 border-0">
+            <div class="feature-icon mb-3">🔍</div>
+            <h5 class="card-title">2. Detect</h5>
+            <p class="card-text text-muted">
+              RF-DETR analyzes every frame, locating potholes, alligator cracks, as well as longitudinal and traversal cracks.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card feature-card h-100 text-center p-3 border-0">
+            <div class="feature-icon mb-3">📈</div>
+            <h5 class="card-title">3. Visualize</h5>
+            <p class="card-text text-muted">
+              View annotated images and videos with detailed detection summaries too.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical details -->
+  <section class="pb-5">
+    <div class="container">
+      <h2 class="mb-4 text-center">Under the Hood</h2>
+      <ul class="list-group list-group-flush shadow-sm">
+        <li class="list-group-item">
+          <strong>Architecture:</strong> RF-DETR with a ResNet-18 Backbone 
+        </li>
+        <li class="list-group-item">
+          <strong>Data:</strong> RDD2020 split 70/15/15, converted from PascalVOC to COCO  
+        </li>
+        <li class="list-group-item">
+          <strong>Training:</strong> 150 epochs, mixed-precision, multi-scale augmentation, focal loss  
+        </li>
+        <li class="list-group-item">
+          <strong>Deployment:</strong> Flask + Django backend, serving via CV2 and Supervision annotations  
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Our Team -->
+  <section class="pb-5 pt-5" style="background-color: #f8f9fa;">
+    <div class="container">
+      <h2 class="mb-4 text-center">Meet the Team</h2>
+      <div class="row g-4">
+        
+        <!-- Team Member 1 -->
+        <div class="col-md-4">
+          <div class="card h-100 text-center border-0 shadow-sm p-3">
+            <img src="/media/images/mahidi.jpg" class="rounded-circle mx-auto d-block mb-3" alt="Kalyan" style="width: 100px; height: 100px; object-fit: cover;">
+            <h5 class="card-title mb-1">Mahidi Ilangarathna</h5>
+            <p class="text-muted mb-1">Student</p>
+            <p class="card-text small text-muted">
+              Undergraduate student in Computing Science (Honours) at UTS, majoring in AI & Data Analytics. Passionate about AI applications, CNNs, Quantum Computing and Data Analytics.
+            </p>
+            <p class="small text-muted mb-0">MahidiRasanjana.Ilangarathna@student.uts.edu.au</p>
+          </div>
+        </div>
+
+        <!-- Team Member 2 -->
+        <div class="col-md-4">
+          <div class="card h-100 text-center border-0 shadow-sm p-3">
+            <img src="/media/images/sanija.jpg" class="rounded-circle mx-auto d-block mb-3" alt="Kaajal" style="width: 100px; height: 100px; object-fit: cover;">
+            <h5 class="card-title mb-1">Sanija Nethaka Abeywickrama</h5>
+            <p class="text-muted mb-1">Student</p>
+            <p class="card-text small text-muted">
+              Undergraduate student in Computing Science (Honours) at UTS, majoring in AI & Data Analytics. Interested in Data Analytics and it's applications in the Business Sector.
+            </p>
+            <p class="small text-muted mb-0">SanijaNethaka.AbeywickramaBatagodage@student.uts.edu.au</p>
+          </div>
+        </div>
+
+        <!-- Team Member 3 -->
+        <div class="col-md-4">
+          <div class="card h-100 text-center border-0 shadow-sm p-3">
+            <img src="/media/images/anik.jpg" class="rounded-circle mx-auto d-block mb-3" alt="Symac" style="width: 100px; height: 100px; object-fit: cover;">
+            <h5 class="card-title mb-1">Anik Chandra Sarkar</h5>
+            <p class="text-muted mb-1">Student</p>
+            <p class="card-text small text-muted">
+              Postgraduate student at UTS in AI. Interested in applied machine learning and computer vision. I am passionate about building practical AI solutions that address real-world challenges.
+            </p>
+            <p class="small text-muted mb-0">Anik.C.Sarkar@student.uts.edu.au</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  
+{% endblock %}

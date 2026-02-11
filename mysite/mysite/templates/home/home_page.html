@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block extra_css %}
+  <!-- Poppins font + global styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <head>
+    <title>Home</title>
+  </head>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f2f5f8;
+      margin: 0;
+      padding-top: 80px;
+      color: #333;
+    }
+    /* Hero text only */
+    .hero-text {
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+    }
+    .hero-text h1 {
+      font-size: 3.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #1f2a44;
+    }
+    .hero-text p {
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: #555;
+      max-width: 900px;
+      margin: 0 auto 2rem;
+    }
+    .btn-primary {
+      background: #ff7f50;
+      color: #fff;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .3s;
+    }
+    .btn-primary:hover {
+      background: #e76f3d;
+    }
+    /* Features */
+    .section {
+      padding: 3rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #1f2a44;
+    }
+    .feature-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .feature {
+      flex: 1 1 280px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 2rem;
+      text-align: center;
+    }
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #ff7f50;
+    }
+    .feature h4 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .feature p {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.5;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Text -->
+<section class="hero-text">
+  <h1>{{ self.banner_title }}</h1>
+  <p>{{ self.banner_subtitle|richtext }}</p>
+  <a href="{% pageurl page.get_site.root_page %}imagepage/" class="btn-primary">Try Image Detection</a>
+  &nbsp;&nbsp;
+  <a href="{% pageurl page.get_site.root_page %}video-detect/" class="btn-primary">Try Video Detection</a>
+</section>
+
+<!-- Features -->
+<section class="section">
+  <h2 class="section-title">Why RoadScan AI?</h2>
+  <div class="feature-row">
+    <div class="feature">
+      <div class="feature-icon">🛣️</div>
+      <h4>Precision Detection</h4>
+      <p>Our cutting-edge RF-DETR model identifies cracks, potholes, and surface defects with industry-leading accuracy.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <h4>Fast & Scalable</h4>
+      <p>Process thousands of images or hours of dashcam video in minutes—ideal for municipalities and fleets.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📈</div>
+      <h4>Actionable Insights</h4>
+      <p>Generate COCO metrics, geotagged damage maps, and severity scores to prioritize repairs effectively.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section" style="background:#fff;">
+  <h2 class="section-title">Get Started</h2>
+  <p class="section-text" style="max-width:600px; margin:0 auto 2rem;">
+    No installation required—simply upload your images or videos below to see RoadScan AI in action.
+  </p>
+  <div style="text-align:center;">
+    <a href="{% pageurl page.get_site.root_page %}imagepage/" class="btn-primary">Upload Images</a>
+    &nbsp;&nbsp;
+    <a href="{% pageurl page.get_site.root_page %}video-detect/" class="btn-primary">Upload Videos</a>
+  </div>
+</section>
+
+{% endblock %}
