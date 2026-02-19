@@ -1,6 +1,6 @@
 # RoadScanAI: Road Surface Damage Detection (Images + Videos) using YOLOv8
 
-RoadScanAI is a Wagtail/Django web application that performs automated road-surface damage detection (e.g., potholes, cracks, rutting) on **uploaded images and dashcam videos** using a **trained YOLOv8 model**. The app supports an end-to-end workflow: **upload media → run inference → generate annotated outputs → preview results in the browser**.
+RoadScanAI is a Wagtail/Django web application that performs automated road-surface damage detection (e.g., potholes, cracks, rutting) on **uploaded images and dashcam videos** using a **trained YOLOv8 model**. The app supports an end-to-end workflow: **upload media → run inference → generate annotated outputs → preview results in the browser**. View the live demo: https://drive.google.com/file/d/1bR509Eg19WeDMLGIUMIxXjb3vRPRCrZe/view?usp=sharing
 
 ---
 
